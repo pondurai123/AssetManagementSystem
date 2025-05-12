@@ -1,0 +1,30 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  .alert.alert-info
+    h4.mb-0 Overview
+    p Total Available Assets: #{totalCount} | Total Value: $#{totalValue.toFixed(2)}
+  
+  each branchData, branchName in branches
+    .card.mb-4
+      .card-header
+        h5.mb-0 #{branchName} Branch
+      .card-body
+        p
+          | Available Assets: #{branchData.totalCount} | 
+          | Total Value: $#{branchData.totalValue.toFixed(2)}
+        
+        table.table.table-sm
+          thead
+            tr
+              th Category
+              th Quantity
+              th Total Value
+          tbody
+            each category in branchData.categories
+              tr
+                td= category.name
+                td= category.count
+                td $#{category.value.toFixed(2)}

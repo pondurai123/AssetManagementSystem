@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  form(method="post")
+    .mb-3
+      label.form-label(for="assetId") Select Asset to Return
+      select.form-select#assetId(name="assetId", required)
+        option(value="") Select Asset
+        each asset in assets
+          if asset.AssetHistories && asset.AssetHistories[0] && asset.AssetHistories[0].Employee
+            option(value=asset.id)= asset.uniqueId + ' - ' + asset.make + ' ' + asset.model + ' (Assigned to: ' + asset.AssetHistories[0].Employee.firstName + ' ' + asset.AssetHistories[0].Employee.lastName + ')'
+    
+    .mb-3
+      label.form-label(for="returnDate") Return Date
+      input.form-control#returnDate(type="date", name="returnDate", value=new Date().toISOString().split('T')[0], required)
+    
+    .mb-3
+      label.form-label(for="reason") Reason for Return
+      select.form-select#reason(name="reason", required)
+        option(value="completed") Project/Assignment Completed
+        option(value="upgrade") Upgrade/Replacement
+        option(value="repair") Needs Repair
+        option(value="resignation") Employee Resignation
+        option(value="other") Other
+     .mb-3
+      label.form-label(for="notes") Notes
+      textarea.form-control#notes(name="notes", rows="3")
+    
+    .mb-3
+      button.btn.btn-primary(type="submit") Return Asset
+      a.btn.btn-secondary.ms-2(href="/assets") Cancel

@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  .row.mb-4
+    .col-md-6
+      a.btn.btn-primary(href="/categories/add") Add New Category
+    .col-md-6
+      form.d-flex(method="get")
+        input.form-control.me-2(type="text", name="search", placeholder="Search categories...", value=search)
+        button.btn.btn-outline-primary(type="submit") Search
+  
+  table.table.table-striped.table-hover#categoriesTable
+    thead
+      tr
+        th Name
+        th Description
+        th Actions
+    tbody
+      each category in categories
+        tr
+          td= category.name
+          td= category.description
+          td
+            a.btn.btn-sm.btn-outline-primary(href="/categories/edit/" + category.id) Edit
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#categoriesTable').DataTable({
+        paging: true,
+        lengthChange: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true
+      });
+    });

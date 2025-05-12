@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  .row.mt-4
+    .col-md-4.mb-4
+      .card.h-100
+        .card-body
+          h5.card-title Asset Utilization Report
+          p.card-text View how effectively assets are being utilized over time
+          a.btn.btn-primary(href="/reports/asset-utilization") View Report
+    
+    .col-md-4.mb-4
+      .card.h-100
+        .card-body
+          h5.card-title Employee Assets Report
+          p.card-text See what assets are assigned to each employee
+          a.btn.btn-primary(href="/reports/employee-assets") View Report
+    
+    .col-md-4.mb-4
+      .card.h-100
+        .card-body
+          h5.card-title Asset Value Report
+          p.card-text Understand the financial distribution of assets
+          a.btn.btn-primary(href="/reports/asset-value") View Report

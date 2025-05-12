@@ -1,0 +1,73 @@
+```jade
+extends ../layout
+
+block content
+  .container-fluid
+    .row
+      .col-md-12
+        h1.h3.mb-4 Employee Assets Report
+
+        // Filters
+    form.mb-4(method='GET' action='/reports/employee-assets')
+      .row
+        .col-md-3
+          select.form-control(name='employeeId')
+            option(value='') All Employees
+            each emp in allEmployees
+              option(value=emp.id selected=(emp.id == selectedEmployee)) 
+                | #{emp.firstName} #{emp.lastName}
+        
+        .col-md-3
+          select.form-control(name='departmentId')
+            option(value='') All Departments
+            each dept in departments
+              option(value=dept selected=(dept == selectedDepartment)) #{dept}
+        
+        .col-md-3
+          select.form-control(name='branchId')
+            option(value='') All Branches
+            each branch in branches
+              option(value=branch selected=(branch == selectedBranch)) #{branch}
+        
+        .col-md-3
+          select.form-control(name='status')
+            option(value='') All Statuses
+            option(value='assigned' selected=(status == 'assigned')) Assigned
+            option(value='available' selected=(status == 'available')) Available
+        
+        .col-md-12.mt-3
+          button.btn.btn-primary(type='submit') Apply Filters
+
+    // Employees Assets List
+    each employee in employeeAssets
+      .card.mb-3
+        .card-header
+          h5.mb-0 
+            | #{employee.firstName} #{employee.lastName}
+          small.text-muted #{employee.department} Department, #{employee.branch} Branch
+        .card-body
+          if employee.assets.length === 0
+            p.text-muted No assets currently assigned to this employee.
+          else
+            table.table.table-sm
+              thead
+                tr
+                  th Unique ID
+                  th Category
+                  th Make/Model
+                  th Status
+                  th Purchase Price
+              tbody
+                each asset in employee.assets
+                  tr
+                    td #{asset.uniqueId}
+                    td #{asset.AssetCategory.name}
+                    td #{asset.make} #{asset.model}
+                    td #{asset.status}
+                    td $#{formatPrice(asset.purchasePrice)}
+        .card-footer
+          .row
+            .col-md-6
+              strong Total Assets: #{employee.assets.length}
+            .col-md-6.text-right
+              strong Total Value: $#{formatPrice(employee.totalValue)}

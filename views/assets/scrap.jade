@@ -1,0 +1,32 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  form(method="post")
+    .mb-3
+      label.form-label(for="assetId") Select Asset to Scrap
+      select.form-select#assetId(name="assetId", required)
+        option(value="") Select Asset
+        each asset in assets
+          option(value=asset.id)= asset.uniqueId + ' - ' + asset.make + ' ' + asset.model + ' (' + asset.status + ')'
+    
+    .mb-3
+      label.form-label(for="scrapDate") Scrap Date
+      input.form-control#scrapDate(type="date", name="scrapDate", value=new Date().toISOString().split('T')[0], required)
+    
+    .mb-3
+      label.form-label(for="reason") Reason for Scrapping
+      select.form-select#reason(name="reason", required)
+        option(value="obsolete") Obsolete/Outdated
+        option(value="damaged") Damaged Beyond Repair
+        option(value="not-cost-effective") Not Cost-Effective to Repair
+        option(value="other") Other
+    
+    .mb-3
+      label.form-label(for="notes") Notes
+      textarea.form-control#notes(name="notes", rows="3")
+    
+    .mb-3
+      button.btn.btn-primary(type="submit") Scrap Asset
+      a.btn.btn-secondary.ms-2(href="/assets") Cancel

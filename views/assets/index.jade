@@ -1,0 +1,68 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  .row.mb-4
+    .col-md-3
+      a.btn.btn-primary(href="/assets/add") Add New Asset
+    .col-md-9
+      form.d-flex(method="get")
+        select.form-select.me-2(name="category")
+          option(value="", selected=selectedCategory==='') All Categories
+          each category in categories
+            option(value=category.id, selected=selectedCategory==category.id)= category.name
+        select.form-select.me-2(name="status")
+          option(value="", selected=selectedStatus==='') All Statuses
+          option(value="available", selected=selectedStatus==='available') Available
+          option(value="assigned", selected=selectedStatus==='assigned') Assigned
+          option(value="repair", selected=selectedStatus==='repair') Under Repair
+          option(value="scrapped", selected=selectedStatus==='scrapped') Scrapped
+        input.form-control.me-2(type="text", name="search", placeholder="Search make, model, serial #...", value=search)
+        button.btn.btn-outline-primary(type="submit") Filter
+  
+  table.table.table-striped.table-hover#assetsTable
+    thead
+      tr
+        th Asset ID
+        th Serial Number
+        th Make & Model
+        th Category
+        th Branch
+        th Status
+        th Actions
+    tbody
+      each asset in assets
+        tr
+          td= asset.uniqueId
+          td= asset.serialNumber
+          td= asset.make + ' ' + asset.model
+          td= asset.AssetCategory.name
+          td= asset.branch
+          td
+            case asset.status
+              when 'available'
+                span.badge.bg-success Available
+              when 'assigned'
+                span.badge.bg-primary Assigned
+              when 'repair'
+                span.badge.bg-warning Under Repair
+              when 'scrapped'
+                span.badge.bg-danger Scrapped
+          td
+            .btn-group
+              a.btn.btn-sm.btn-outline-primary(href="/assets/edit/" + asset.id) Edit
+              a.btn.btn-sm.btn-outline-info(href="/assets/history/" + asset.id) History
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#assetsTable').DataTable({
+        paging: true,
+        lengthChange: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true
+      });
+    });

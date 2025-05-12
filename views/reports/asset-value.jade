@@ -1,0 +1,90 @@
+
+```jade
+extends ../layout
+
+block content
+  .container-fluid
+    .row
+      .col-md-12
+        h1.h3.mb-4 Asset Value Report
+
+        .row
+          .col-md-4
+            .card.mb-4
+              .card-header
+                h5.mb-0 Assets by Category
+              .card-body
+                table.table.table-sm
+                  thead
+                    tr
+                      th Category
+                      th Count
+                      th Total Value
+                  tbody
+                    each category in assetsByCategory
+                      tr
+                        td #{category.AssetCategory.name}
+                        td #{category.count}
+                        td $#{category.totalValue ? parseFloat(category.totalValue).toFixed(2) : '0.00'}
+                    tr.table-active
+                      td: strong Total
+                       td: strong #{assetsByCategory.reduce((sum, cat) => sum + parseInt(cat.count), 0)}
+                      td: strong $#{totalAssetValue.toFixed(2)}
+
+          .col-md-4
+            .card.mb-4
+              .card-header
+                h5.mb-0 Assets by Status
+              .card-body
+                table.table.table-sm
+                  thead
+                    tr
+                      th Status
+                      th Count
+                      th Total Value
+                  tbody
+                    each status in assetsByStatus
+                      tr
+                        td #{status.status}
+                        td #{status.count}
+                        td $#{status.totalValue ? parseFloat(status.totalValue).toFixed(2) : '0.00'}
+                    tr.table-active
+                      td: strong Total
+                      td: strong #{assetsByStatus.reduce((sum, status) => sum + Number(status.count), 0)}
+                      td: strong $#{totalAssetValue.toFixed(2)}
+
+          .col-md-4
+            .card.mb-4
+              .card-header
+                h5.mb-0 Assets by Branch
+              .card-body
+                table.table.table-sm
+                  thead
+                    tr
+                      th Branch
+                      th Count
+                      th Total Value
+                  tbody
+                    each branch in assetsByBranch
+                      tr
+                        td #{branch.branch || 'Unassigned'}
+                        td #{branch.count}
+                        td $#{branch.totalValue ? parseFloat(branch.totalValue).toFixed(2) : '0.00'}
+                    tr.table-active
+                      td: strong Total
+                      td: strong #{assetsByBranch.reduce((sum, branch) => sum + Number(branch.count), 0)}
+                      td: strong $#{totalAssetValue.toFixed(2)}
+
+        .row.mt-4
+          .col-md-12
+            .card
+              .card-header
+                h5.mb-0 Total Asset Value Summary
+              .card-body
+                .row
+                  .col-md-6
+                    p.lead Total Asset Count: 
+                      strong #{assetsByCategory.reduce((sum, cat) => sum + Number(cat.count), 0)}
+                  .col-md-6
+                    p.lead Total Asset Value: 
+                      strong $#{totalAssetValue.toFixed(2)}

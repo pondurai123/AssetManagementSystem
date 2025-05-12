@@ -1,0 +1,53 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  .row.mb-4
+    .col-md-6
+      a.btn.btn-primary(href="/employees/add") Add New Employee
+    .col-md-6
+      form.d-flex(method="get")
+        select.form-select.me-2(name="status")
+          option(value="all", selected=status==='all') All Employees
+          option(value="active", selected=status==='active') Active Only
+          option(value="inactive", selected=status==='inactive') Inactive Only
+        input.form-control.me-2(type="text", name="search", placeholder="Search...", value=search)
+        button.btn.btn-outline-primary(type="submit") Filter
+  
+  table.table.table-striped.table-hover#employeesTable
+    thead
+      tr
+        th Employee ID
+        th Name
+        th Email
+        th Department
+        th Branch
+        th Status
+        th Actions
+    tbody
+      each employee in employees
+        tr
+          td= employee.employeeId
+          td= employee.firstName + ' ' + employee.lastName
+          td= employee.email
+          td= employee.department
+          td= employee.branch
+          td
+            span(class=employee.isActive ? 'badge bg-success' : 'badge bg-danger')= employee.isActive ? 'Active' : 'Inactive'
+          td
+            a.btn.btn-sm.btn-outline-primary(href="/employees/edit/" + employee.id) Edit
+
+block scripts
+  script.
+    $(document).ready(function() {
+      $('#employeesTable').DataTable({
+        paging: true,
+        lengthChange: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        autoWidth: false,
+        responsive: true
+      });
+    });

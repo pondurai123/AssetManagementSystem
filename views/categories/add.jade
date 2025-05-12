@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  form(method="post")
+    .mb-3
+      label.form-label(for="name") Category Name
+      input.form-control#name(type="text", name="name", required)
+    
+    .mb-3
+      label.form-label(for="description") Description
+      textarea.form-control#description(name="description", rows="3")
+    
+    .mb-3
+      button.btn.btn-primary(type="submit") Save Category
+      a.btn.btn-secondary.ms-2(href="/categories") Cancel

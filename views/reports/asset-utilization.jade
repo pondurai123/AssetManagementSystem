@@ -1,0 +1,133 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  form.mb-4(method="get")
+    .row
+      .col-md-4.mb-2
+        label.form-label(for="categoryId") Filter by Category
+        select.form-select#categoryId(name="categoryId")
+          option(value="", selected=selectedCategory==='') All Categories
+          each category in categories
+            option(value=category.id, selected=selectedCategory==category.id)= category.name
+      .col-md-4.mb-2
+        label.form-label(for="startDate") Start Date
+        input.form-control#startDate(type="date", name="startDate", value=startDate)
+      .col-md-4.mb-2
+        label.form-label(for="endDate") End Date
+        input.form-control#endDate(type="date", name="endDate", value=endDate)
+    .row
+      .col-md-12
+        button.btn.btn-primary(type="submit") Generate Report
+  
+  .card.mb-4
+    .card-header Asset Utilization Metrics
+    .card-body
+      .row
+        .col-md-4
+          .card
+            .card-body.text-center
+              h2.display-4 #{utilizationRate}%
+              p.mb-0 Overall Utilization Rate
+        .col-md-4
+          .card
+            .card-body.text-center
+              h2.display-4 #{avgAssignmentDays}
+              p.mb-0 Avg. Assignment Days
+        .col-md-4
+          .card
+            .card-body.text-center
+              h2.display-4 #{totalTransactions}
+              p.mb-0 Total Transactions
+
+  h3.mb-3 Utilization by Category
+  .chart-container.mb-4(style="height: 400px;")
+    canvas#categoryChart
+
+  h3.mb-3 Utilization Timeline
+  .chart-container.mb-4(style="height: 400px;")
+    canvas#timelineChart
+  
+  h3.mb-3 Detailed Asset Utilization
+  table.table.table-striped.table-hover#utilizationTable
+    thead
+      tr
+        th Asset ID
+        th Category
+        th Make & Model
+        th Total Days in Use
+        th Number of Assignments
+        th Utilization Rate
+    tbody
+      each asset in assets
+        tr
+          td= asset.uniqueId
+          td= asset.category
+          td= asset.makeModel
+          td= asset.daysInUse
+          td= asset.assignmentCount
+          td= asset.utilizationRate + '%'
+
+block scripts
+  script(src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js")
+  script.
+    $(document).ready(function() {
+      $('#utilizationTable').DataTable({
+        paging: true,
+        ordering: true,
+        info: true
+      });
+      
+      // Category chart
+      const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+      new Chart(categoryCtx, {
+        type: 'bar',
+        data: {
+          labels: !{JSON.stringify(categoryLabels)},
+          datasets: [{
+            label: 'Utilization Rate (%)',
+            data: !{JSON.stringify(categoryData)},
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
+      
+      // Timeline chart
+      const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+      new Chart(timelineCtx, {
+        type: 'line',
+        data: {
+          labels: !{JSON.stringify(timelineLabels)},
+          datasets: [{
+            label: 'Utilization Rate (%)',
+            data: !{JSON.stringify(timelineData)},
+            fill: false,
+            borderColor: 'rgba(75, 192, 192, 1)',
+            tension: 0.1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
+    });

@@ -1,0 +1,37 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  form(method="post")
+    .mb-3
+      label.form-label(for="employeeId") Employee ID
+      input.form-control#employeeId(type="text", name="employeeId", required)
+    
+    .row
+      .col-md-6.mb-3
+        label.form-label(for="firstName") First Name
+        input.form-control#firstName(type="text", name="firstName", required)
+      .col-md-6.mb-3
+        label.form-label(for="lastName") Last Name
+        input.form-control#lastName(type="text", name="lastName", required)
+    
+    .mb-3
+      label.form-label(for="email") Email
+      input.form-control#email(type="email", name="email", required)
+    
+    .row
+      .col-md-6.mb-3
+        label.form-label(for="department") Department
+        input.form-control#department(type="text", name="department", required)
+      .col-md-6.mb-3
+        label.form-label(for="branch") Branch
+        input.form-control#branch(type="text", name="branch", required)
+    
+    .mb-3
+      label.form-label(for="joiningDate") Joining Date
+      input.form-control#joiningDate(type="date", name="joiningDate", required)
+    
+    .mb-3
+      button.btn.btn-primary(type="submit") Save Employee
+      a.btn.btn-secondary.ms-2(href="/employees") Cancel

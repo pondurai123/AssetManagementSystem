@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  .jumbotron.bg-light.p-5.rounded
+    h1.display-4 Welcome to Asset Management System
+    p.lead Track and manage company assets efficiently
+    hr.my-4
+    p Quick access to common functions:
+    .row.mt-4
+      .col-md-3.mb-3
+        .card.h-100
+          .card-body
+            h5.card-title Employee Management
+            p.card-text Add, edit, and view employee records
+            a.btn.btn-primary(href="/employees") Manage Employees
+      .col-md-3.mb-3
+        .card.h-100
+          .card-body
+            h5.card-title Asset Management
+            p.card-text Track all company assets
+            a.btn.btn-primary(href="/assets") Manage Assets
+      .col-md-3.mb-3
+        .card.h-100
+          .card-body
+            h5.card-title Stock View
+            p.card-text View assets currently in stock
+            a.btn.btn-primary(href="/assets/stock") View Stock
+      .col-md-3.mb-3
+        .card.h-100
+          .card-body
+            h5.card-title Reports
+            p.card-text Generate various reports
+            a.btn.btn-primary(href="/reports") View Reports
